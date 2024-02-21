@@ -1,3 +1,7 @@
+
+/// @author ： 于德海
+/// time ： 2024/2/20 19:30
+/// desc ：
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
@@ -24,7 +28,7 @@ class DioManager {
     _dio = Dio();
     _dio.options.baseUrl = AppConfig.baseUrl;
     _dio.interceptors.add(HttpInterceptor());
-    _dio.interceptors.add(LogInterceptor(responseBody: true));
+    // _dio.interceptors.add(LogInterceptor(responseBody: true));
   }
 
   void _request<T>(String path, String method,
@@ -79,14 +83,14 @@ class DioManager {
     }
   }
 
-  void get<T>(String path, OnData<T> dataCall,
-      {Map<String, dynamic>? param, OnError? errorCall}) async {
+  void get<T>(String path,
+      {Map<String, dynamic>? param,OnData<T>? dataCall, OnError? errorCall}) async {
     _request<T>(path, "GET",
         dataCall: dataCall, param: param, errorCall: errorCall);
   }
 
-  void post<T>(String path, OnData<T> dataCall,
-      {Map<String, dynamic>? param, OnError? errorCall}) async {
+  void post<T>(String path,
+      {Map<String, dynamic>? param,OnData<T>? dataCall, OnError? errorCall}) async {
     _request<T>(path, "POST",
         param: param, dataCall: dataCall, errorCall: errorCall);
   }

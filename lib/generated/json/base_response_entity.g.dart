@@ -27,6 +27,6 @@ Map<String, dynamic> $BaseResponseEntityToJson(BaseResponseEntity entity) {
   return data;
 }
 
-extension BaseResponseEntityExtension on BaseResponseEntity{
+extension BaseResponseEntityExtension on BaseResponseEntity {
 
 }

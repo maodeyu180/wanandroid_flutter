@@ -1,5 +1,12 @@
+/// @author ： 于德海
+/// time ： 2024/2/20 19:03
+/// desc ：
 import 'package:flutter/material.dart';
+import 'package:wan_android_flutter/routes/classify_page.dart';
+import 'package:wan_android_flutter/routes/home_page.dart';
 import 'package:wan_android_flutter/routes/main_page_extension.dart';
+import 'package:wan_android_flutter/routes/navigator_page.dart';
+import 'package:wan_android_flutter/routes/project_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -17,7 +24,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(title: 'WanAndroid'),
     );
   }
 }
@@ -41,18 +48,16 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
 
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
+  late int _pageIndex = 0;
+  late PageController _pageController;
+  @override
+  void initState() {
+    _pageIndex = 0;
+    _pageController = PageController();
+    super.initState();
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -73,44 +78,34 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
       drawer: MainDrawer(),
-      bottomNavigationBar: BottomNavigationBar(items: <BottomNavigationBarItem>[
-                  BottomNavigationBarItem(icon: Icon(Icons.home), label:'Home'),
-                  BottomNavigationBarItem(icon: Icon(Icons.business), label: 'Business'),
-                  BottomNavigationBarItem(icon: Icon(Icons.school), label: 'School'),
-      ],),
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        currentIndex: _pageIndex,
+        onTap: (clickIndex){
+          setState(() {
+            _pageIndex = clickIndex;
+          });
+        },
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: '首页'),
+          BottomNavigationBarItem(icon: Icon(Icons.business), label: '体系'),
+          BottomNavigationBarItem(icon: Icon(Icons.school), label: '导航'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.accessible_forward), label: '项目'),
+        ],
+      ),
       body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
-        ),
+        child: Stack(children: [
+          Visibility(visible: _pageIndex == 0 , child: HomePage()),
+          Visibility(visible: _pageIndex == 1 , child: ClassifyPage()),
+          Visibility(visible: _pageIndex == 2 , child: NavigatorPage()),
+          Visibility(visible: _pageIndex == 3 , child: ProjectPage()),
+        ],)
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
+        onPressed: (){},
+        tooltip: 'FeedBack',
+        child: const Icon(Icons.feedback),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
