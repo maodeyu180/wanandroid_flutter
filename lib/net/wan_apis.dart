@@ -8,14 +8,14 @@ import '../models/home_article_list_entity.dart';
 
 class WanApis{
 
-  static void bannerHome(OnData<List<BannerHomeEntity>> dataCall, OnError errorCall)async{
-    DioManager.getIns().get('/banner/json', dataCall: dataCall, errorCall:  errorCall);
+  static Future<List<BannerHomeEntity>> bannerHome()async{
+    return await DioManager.getIns().get('/banner/json');
   }
 
 
-  static void homeList(int pageIndex, OnData<HomeArticleListEntity> dataCall, OnError errorCall)async{
+  static Future<HomeArticleListEntity> homeList(int pageIndex)async{
     Map<String,dynamic> params = {};
     params["page_size"] = 20;
-    DioManager.getIns().get('/article/list/$pageIndex/json', dataCall: dataCall, errorCall:  errorCall);
+    return await DioManager.getIns().get('/article/list/$pageIndex/json');
   }
 }

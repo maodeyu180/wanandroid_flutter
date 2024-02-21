@@ -8,6 +8,8 @@ import 'package:wan_android_flutter/routes/main_page_extension.dart';
 import 'package:wan_android_flutter/routes/navigator_page.dart';
 import 'package:wan_android_flutter/routes/project_page.dart';
 
+import 'common/common_utils.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -96,14 +98,16 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: Center(
         child: Stack(children: [
-          Visibility(visible: _pageIndex == 0 , child: HomePage()),
+          Visibility(visible: _pageIndex == 0 ,maintainState: true, child: HomePage()),
           Visibility(visible: _pageIndex == 1 , child: ClassifyPage()),
           Visibility(visible: _pageIndex == 2 , child: NavigatorPage()),
           Visibility(visible: _pageIndex == 3 , child: ProjectPage()),
         ],)
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: (){},
+        onPressed: (){
+          CommonUtils.showNoticeDialog(context,"暂未开放");
+        },
         tooltip: 'FeedBack',
         child: const Icon(Icons.feedback),
       ), // This trailing comma makes auto-formatting nicer for build methods.
