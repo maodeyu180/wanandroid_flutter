@@ -20,12 +20,12 @@ void tagPrint(String tag, String msg) {
 }
 
 class CommonUtils {
-  static Future<dynamic> showNoticeDialog(BuildContext context, String msg) {
+  static Future<dynamic> showNoticeDialog(BuildContext context, String msg,{String? title}) {
     return showDialog(
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: Text('Notice'),
+            title: Text(title ?? 'Notice'),
             content: Text(msg),
             actions: [
               TextButton(

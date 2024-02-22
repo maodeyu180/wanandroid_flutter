@@ -2,6 +2,7 @@
 /// time ： 2024/2/20 19:03
 /// desc ：
 import 'package:flutter/material.dart';
+import 'package:wan_android_flutter/common/route_config.dart';
 import 'package:wan_android_flutter/routes/classify_page.dart';
 import 'package:wan_android_flutter/routes/home_page.dart';
 import 'package:wan_android_flutter/routes/main_page_extension.dart';
@@ -21,29 +22,20 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      routes: globalRoutes,
       title: 'WanAndroidFlutter',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'WanAndroid'),
+      initialRoute: RouteName.home,
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+  const MyHomePage({super.key});
 
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -77,7 +69,10 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
+        title: const Text("Wan Android"),
+        actions: [IconButton(onPressed: (){
+          CommonUtils.showNoticeDialog(context, "搜索暂未开放",title: "Search");
+        }, icon: const Icon(Icons.search))],
       ),
       drawer: MainDrawer(),
       bottomNavigationBar: BottomNavigationBar(

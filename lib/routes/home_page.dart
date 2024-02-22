@@ -2,6 +2,7 @@ import 'dart:math';
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:wan_android_flutter/common/common_utils.dart';
+import 'package:wan_android_flutter/common/route_config.dart';
 import 'package:wan_android_flutter/net/wan_apis.dart';
 import '../models/banner_home_entity.dart';
 import '../models/home_article_list_entity.dart';
@@ -41,15 +42,14 @@ class _HomePageState extends State<HomePage> {
 
   Future<HomeArticleListEntity> _requestArticle() async {
     return await WanApis.homeList(pageIndex);
-
   }
 
   Future<void> _refresh() async {
     pageIndex = 0;
-    var bannerData = await WanApis.bannerHome().catchError((e){
+    var bannerData = await WanApis.bannerHome().catchError((e) {
       tagPrint(_tag, "banner error:$e");
     });
-   _bannerList = bannerData;
+    _bannerList = bannerData;
     HomeArticleListEntity articleListBean = await _requestArticle();
     setState(() {
       _articleList.clear();
@@ -116,26 +116,31 @@ class _HomePageItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: double.infinity,
-      height: 120,
-      child: Card(
-          color: _randomColors[Random().nextInt(_randomColors.length)],
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
-          child: Stack(
-            children: [
-              Positioned(
-                left: 10,
-                top: 10,
-                child: Text(
-                  itemData.title ?? "",
-                  style: TextStyle(fontSize: 15, color: Colors.black),
-                ),
-              ),
-              Positioned(
-                  left: 10, top: 60, child: Text("作者：${itemData.author}"))
-            ],
-          )),
-    );
+        width: double.infinity,
+        height: 120,
+        child: InkWell(
+          onTap: () {
+            Navigator.of(context)
+                .pushNamed(RouteName.detail, arguments: itemData);
+          },
+          child: Card(
+              color: _randomColors[Random().nextInt(_randomColors.length)],
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0)),
+              child: Stack(
+                children: [
+                  Positioned(
+                    left: 10,
+                    top: 10,
+                    child: Text(
+                      itemData.title ?? "",
+                      style: TextStyle(fontSize: 15, color: Colors.black),
+                    ),
+                  ),
+                  Positioned(
+                      left: 10, top: 60, child: Text("作者：${itemData.author}"))
+                ],
+              )),
+        ));
   }
 }
