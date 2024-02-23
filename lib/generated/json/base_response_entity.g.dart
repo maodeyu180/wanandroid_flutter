@@ -1,5 +1,6 @@
 import 'package:wan_android_flutter/generated/json/base/json_convert_content.dart';
 import 'package:wan_android_flutter/models/base_response_entity.dart';
+import '../generated/json/base/json_convert_content.dart';
 
 
 BaseResponseEntity $BaseResponseEntityFromJson<D>(Map<String, dynamic> json) {

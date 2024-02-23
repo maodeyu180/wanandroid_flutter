@@ -7,6 +7,7 @@ import 'package:flutter/material.dart' show debugPrint;
 import 'package:wan_android_flutter/models/banner_home_entity.dart';
 import 'package:wan_android_flutter/models/base_response_entity.dart';
 import 'package:wan_android_flutter/models/home_article_list_entity.dart';
+import 'package:wan_android_flutter/models/user_info_entity.dart';
 
 JsonConvert jsonConvert = JsonConvert();
 
@@ -159,6 +160,10 @@ class JsonConvert {
       return data.map<HomeArticleListDatasTags>((Map<String, dynamic> e) =>
           HomeArticleListDatasTags.fromJson(e)).toList() as M;
     }
+    if (<UserInfoEntity>[] is M) {
+      return data.map<UserInfoEntity>((Map<String, dynamic> e) =>
+          UserInfoEntity.fromJson(e)).toList() as M;
+    }
 
     debugPrint("$M not found");
 
@@ -185,6 +190,7 @@ class JsonConvertClassCollection {
     (HomeArticleListEntity).toString(): HomeArticleListEntity.fromJson,
     (HomeArticleListDatas).toString(): HomeArticleListDatas.fromJson,
     (HomeArticleListDatasTags).toString(): HomeArticleListDatasTags.fromJson,
+    (UserInfoEntity).toString(): UserInfoEntity.fromJson,
   };
 
   bool containsKey(String type) {

@@ -3,7 +3,9 @@
 /// desc ：
 import 'dart:convert';
 
+import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
+import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:wan_android_flutter/net/wan_exception.dart';
 
 import '../AppConfig.dart';
@@ -22,9 +24,13 @@ class DioManager {
 
   DioManager._internal() {
     _dio = Dio();
+
     _dio.options.baseUrl = AppConfig.baseUrl;
+
+    final cookieJar = CookieJar();
+    _dio.interceptors.add(CookieManager(cookieJar));
     _dio.interceptors.add(HttpInterceptor());
-    // _dio.interceptors.add(LogInterceptor(responseBody: true));
+    _dio.interceptors.add(LogInterceptor(responseBody: true));
   }
 
   Future<T> _request<T>(String path, String method,
@@ -61,6 +67,9 @@ class DioManager {
       WanException exception = WanException.fromDioError(e);
       logE(tag, exception.toString());
       throw exception;
+    } on WanException catch (e) {
+      logE(tag, e.toString());
+      throw e;
     } catch (e) {
       logE(tag, e.toString());
       throw WanException(HttpErrorCode.Unknown, e.toString());

@@ -2,6 +2,7 @@
 /// time ： 2024/2/20 19:03
 /// desc ：
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:wan_android_flutter/common/route_config.dart';
 import 'package:wan_android_flutter/routes/classify_page.dart';
 import 'package:wan_android_flutter/routes/home_page.dart';
@@ -28,6 +29,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
+      builder: EasyLoading.init(),
       initialRoute: RouteName.home,
     );
   }

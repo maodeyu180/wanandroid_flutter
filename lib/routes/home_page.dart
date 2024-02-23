@@ -32,9 +32,10 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
+    _bannerList = [];
+    _articleList = [];
     tagPrint(_tag, "initState");
     pageIndex = 0;
-    _articleList = [];
     _refresh();
 
     super.initState();
