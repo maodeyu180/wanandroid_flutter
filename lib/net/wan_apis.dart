@@ -24,4 +24,7 @@ class WanApis{
   static Future<UserInfoEntity> login(String username,String password) async{
     return await DioManager.getIns().post('/user/login?username=$username&password=$password');
   }
+
+
+
 }

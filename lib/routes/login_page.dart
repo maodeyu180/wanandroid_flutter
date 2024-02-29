@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:provider/provider.dart';
 import 'package:wan_android_flutter/AppConfig.dart';
 import 'package:wan_android_flutter/models/user_info_entity.dart';
 import 'package:wan_android_flutter/net/wan_apis.dart';
 import 'package:wan_android_flutter/net/wan_exception.dart';
+import 'package:wan_android_flutter/providers/user_provider.dart';
 
 ///@author ： 于德海
 ///time ： 2024/2/22 17:08
@@ -97,6 +99,9 @@ class _LoginPageState extends State<LoginPage> {
       UserInfoEntity infoEntity = await WanApis.login(
               _usernameController.value.text, _passwordController.value.text);
       AppConfig.userInfo = infoEntity;
+      if(context.mounted){
+        Provider.of<UserProvider>(context,listen: false).updateUserInfo(infoEntity.username!, infoEntity.password!);
+      }
     }catch(e){
       if(e is WanException){
          EasyLoading.showToast(e.message!);

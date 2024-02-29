@@ -5,4 +5,8 @@ class AppConfig{
   static const String baseUrl = "https://www.wanandroid.com";
 
   static UserInfoEntity userInfo = UserInfoEntity();
+
+
+  static String userName = "";
+  static String password = "";
 }

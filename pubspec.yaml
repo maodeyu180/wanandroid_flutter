@@ -46,6 +46,7 @@ dependencies:
   dio_cookie_manager : ^3.1.1
   cookie_jar: 4.0.8
   flutter_easyloading: ^3.0.5
+  expansion_tile_group: 1.2.4
 dev_dependencies:
   json_serializable: 6.7.1
   build_runner: 2.4.8

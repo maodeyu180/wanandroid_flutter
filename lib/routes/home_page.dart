@@ -68,7 +68,7 @@ class _HomePageState extends State<HomePage> {
         width: double.infinity,
         height: double.infinity,
         child: ListView.builder(
-          itemCount: _articleList.length + 1,
+          itemCount: _articleList.isEmpty ? 0 : _articleList.length + 1,
           shrinkWrap: true,
           itemBuilder: (ctx, index) {
             if (index == 0) {
@@ -84,6 +84,9 @@ class _HomePageState extends State<HomePage> {
                     pagination: SwiperPagination(),
                   ));
             } else {
+              if(index == _articleList.length){
+                _loadMore();
+              }
               return _HomePageItem(
                 itemData: _articleList[index - 1],
               );
@@ -98,6 +101,14 @@ class _HomePageState extends State<HomePage> {
   void dispose() {
     tagPrint(_tag, "dispose");
     super.dispose();
+  }
+
+  void _loadMore() async{
+    pageIndex++;
+    HomeArticleListEntity articleListBean = await _requestArticle();
+    setState(() {
+        _articleList.addAll(articleListBean.datas!);
+    });
   }
 }
 //

@@ -3,7 +3,10 @@
 /// desc ：
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:provider/provider.dart';
 import 'package:wan_android_flutter/common/route_config.dart';
+import 'package:wan_android_flutter/common/wan_global.dart';
+import 'package:wan_android_flutter/providers/user_provider.dart';
 import 'package:wan_android_flutter/routes/classify_page.dart';
 import 'package:wan_android_flutter/routes/home_page.dart';
 import 'package:wan_android_flutter/routes/main_page_extension.dart';
@@ -13,7 +16,7 @@ import 'package:wan_android_flutter/routes/project_page.dart';
 import 'common/common_utils.dart';
 
 void main() {
-  runApp(const MyApp());
+  Global.init().then((value) => runApp(const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -22,15 +25,20 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      routes: globalRoutes,
-      title: 'WanAndroidFlutter',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => UserProvider()),
+      ],
+      child: MaterialApp(
+        routes: globalRoutes,
+        title: 'WanAndroidFlutter',
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          useMaterial3: true,
+        ),
+        builder: EasyLoading.init(),
+        initialRoute: RouteName.home,
       ),
-      builder: EasyLoading.init(),
-      initialRoute: RouteName.home,
     );
   }
 }
@@ -38,22 +46,20 @@ class MyApp extends StatelessWidget {
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
 
-
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
   late int _pageIndex = 0;
   late PageController _pageController;
+
   @override
   void initState() {
     _pageIndex = 0;
     _pageController = PageController();
     super.initState();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -72,15 +78,20 @@ class _MyHomePageState extends State<MyHomePage> {
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
         title: const Text("Wan Android"),
-        actions: [IconButton(onPressed: (){
-          CommonUtils.showNoticeDialog(context, "搜索暂未开放",title: "Search");
-        }, icon: const Icon(Icons.search))],
+        actions: [
+          IconButton(
+              onPressed: () {
+                CommonUtils.showNoticeDialog(context, "搜索暂未开放",
+                    title: "Search");
+              },
+              icon: const Icon(Icons.search))
+        ],
       ),
       drawer: MainDrawer(),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         currentIndex: _pageIndex,
-        onTap: (clickIndex){
+        onTap: (clickIndex) {
           setState(() {
             _pageIndex = clickIndex;
           });
@@ -94,16 +105,18 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
       ),
       body: Center(
-        child: Stack(children: [
-          Visibility(visible: _pageIndex == 0 ,maintainState: true, child: HomePage()),
-          Visibility(visible: _pageIndex == 1 , child: ClassifyPage()),
-          Visibility(visible: _pageIndex == 2 , child: NavigatorPage()),
-          Visibility(visible: _pageIndex == 3 , child: ProjectPage()),
-        ],)
-      ),
+          child: Stack(
+        children: [
+          Visibility(
+              visible: _pageIndex == 0, maintainState: true, child: HomePage()),
+          Visibility(visible: _pageIndex == 1, child: ClassifyPage()),
+          Visibility(visible: _pageIndex == 2, child: NavigatorPage()),
+          Visibility(visible: _pageIndex == 3, child: ProjectPage()),
+        ],
+      )),
       floatingActionButton: FloatingActionButton(
-        onPressed: (){
-          CommonUtils.showNoticeDialog(context,"暂未开放");
+        onPressed: () {
+          CommonUtils.showNoticeDialog(context, "暂未开放");
         },
         tooltip: 'FeedBack',
         child: const Icon(Icons.feedback),
