@@ -1,6 +1,7 @@
 
 
 
+import 'package:wan_android_flutter/models/article_classify_entity.dart';
 import 'package:wan_android_flutter/models/user_info_entity.dart';
 import 'package:wan_android_flutter/net/wan_dio_manager.dart';
 
@@ -26,5 +27,8 @@ class WanApis{
   }
 
 
+  static Future<List<ArticleClassifyEntity>> articleClassify() async{
+    return await DioManager.getIns().get('/tree/json');
+  }
 
 }

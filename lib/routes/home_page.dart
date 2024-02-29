@@ -136,7 +136,7 @@ class _HomePageItem extends StatelessWidget {
                 .pushNamed(RouteName.detail, arguments: itemData);
           },
           child: Card(
-              color: _randomColors[Random().nextInt(_randomColors.length)],
+              color: Theme.of(context).colorScheme.inversePrimary,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10.0)),
               child: Stack(
