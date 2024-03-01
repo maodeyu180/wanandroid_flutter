@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:provider/provider.dart';
 import 'package:wan_android_flutter/common/common_utils.dart';
 import 'package:wan_android_flutter/common/route_config.dart';
@@ -41,8 +42,8 @@ class _HomePageState extends State<HomePage> {
     _refresh();
 
     super.initState();
-    Provider.of<UserProvider>(context,listen: false).addListener(() {
-        _refresh();
+    Provider.of<UserProvider>(context, listen: false).addListener(() {
+      _refresh();
     });
   }
 
@@ -89,7 +90,7 @@ class _HomePageState extends State<HomePage> {
                     pagination: SwiperPagination(),
                   ));
             } else {
-              if(index == _articleList.length){
+              if (index == _articleList.length) {
                 _loadMore();
               }
               return _HomePageItem(
@@ -108,11 +109,11 @@ class _HomePageState extends State<HomePage> {
     super.dispose();
   }
 
-  void _loadMore() async{
+  void _loadMore() async {
     pageIndex++;
     HomeArticleListEntity articleListBean = await _requestArticle();
     setState(() {
-        _articleList.addAll(articleListBean.datas!);
+      _articleList.addAll(articleListBean.datas!);
     });
   }
 }
@@ -148,16 +149,92 @@ class _HomePageItem extends StatelessWidget {
                 children: [
                   Positioned(
                     left: 10,
-                    top: 10,
+                    top: 15,
                     child: Text(
                       itemData.title ?? "",
                       style: TextStyle(fontSize: 15, color: Colors.black),
                     ),
                   ),
                   Positioned(
-                      left: 10, top: 60, child: Text("作者：${itemData.author}"))
+                      left: 10,
+                      top: 65,
+                      child: Text(itemData.author!.isNotEmpty
+                          ? "作者：${itemData.author}"
+                          : "分享者：${itemData.shareUser}")),
+                  Positioned(
+                      left: 120,
+                      top: 65,
+                      child: Text( "发布时间：${itemData.niceShareDate}")),
+                  Positioned(
+                      right: 10,
+                      bottom: 10,
+                      child: _CollectWidget(
+                        itemData: itemData,
+                      ))
                 ],
               )),
         ));
   }
+}
+
+class _CollectWidget extends StatefulWidget {
+  final HomeArticleListDatas itemData;
+
+  const _CollectWidget({Key? key, required this.itemData}) : super(key: key);
+
+  @override
+  State<StatefulWidget> createState() {
+    return _StateCollectWidget();
+  }
+}
+
+class _StateCollectWidget extends State<_CollectWidget> {
+
+  @override
+  void initState() {
+    super.initState();
+  }
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+        onPressed: () {
+          if (widget.itemData.collect) {
+            _unCollect();
+          } else {
+            _collect();
+          }
+        },
+        icon: Icon(
+          widget.itemData.collect ? Icons.favorite : Icons.favorite_border,
+          color: Colors.red,
+        ));
+  }
+
+
+  void _collect(){
+    EasyLoading.show(status: "Waiting...");
+    WanApis.collect(widget.itemData.id!).then((value)  {
+      EasyLoading.dismiss();
+      setState(() {
+        widget.itemData.collect = true;
+      });
+    }).catchError((error, stackTrace) {
+      EasyLoading.dismiss();
+      EasyLoading.showError("Error: ${error.toString()}");
+    });
+  }
+
+  void _unCollect(){
+    EasyLoading.show(status: "Waiting...");
+    WanApis.unCollect(widget.itemData.id!).then((value)  {
+      EasyLoading.dismiss();
+      setState(() {
+        widget.itemData.collect = false;
+      });
+    }).catchError((error, stackTrace) {
+      EasyLoading.dismiss();
+      EasyLoading.showError("Error: ${error.toString()}");
+    });
+   }
+
 }

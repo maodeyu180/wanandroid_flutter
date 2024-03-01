@@ -41,4 +41,13 @@ class WanApis{
     return await DioManager.getIns().get('/lg/collect/list/$pageIndex/json');
   }
 
+  static Future<dynamic> collect(int id) async{
+    return await DioManager.getIns().post('/lg/collect/$id/json');
+  }
+
+
+  static Future<dynamic> unCollect(int id) async{
+    return await DioManager.getIns().post('/lg/uncollect/$id/json');
+  }
+
 }

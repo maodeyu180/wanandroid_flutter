@@ -34,7 +34,7 @@ class HomeArticleListDatas {
 	bool? canEdit = false;
 	int? chapterId = 0;
 	String? chapterName = '';
-	bool? collect = false;
+	bool collect = false;
 	int? courseId = 0;
 	String? desc = '';
 	String? descMd = '';
