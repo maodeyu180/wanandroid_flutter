@@ -17,6 +17,7 @@ class DioManager {
   static const tag = "DioHttpRequest";
   static final DioManager _instance = DioManager._internal();
   static late Dio _dio;
+  static late CookieJar _cookieJar;
 
   static DioManager getIns() {
     return _instance;
@@ -26,11 +27,15 @@ class DioManager {
     _dio = Dio();
 
     _dio.options.baseUrl = AppConfig.baseUrl;
-
-    final cookieJar = CookieJar();
-    _dio.interceptors.add(CookieManager(cookieJar));
+    _cookieJar = CookieJar();
+    _dio.interceptors.add(CookieManager(_cookieJar));
     _dio.interceptors.add(HttpInterceptor());
     _dio.interceptors.add(LogInterceptor(responseBody: true));
+  }
+
+
+  Future<List<Cookie>> loadCookie(String url) {
+    return _cookieJar.loadForRequest(Uri.parse(url));
   }
 
   Future<T> _request<T>(String path, String method,

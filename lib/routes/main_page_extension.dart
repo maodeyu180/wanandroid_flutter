@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:wan_android_flutter/AppConfig.dart';
+import 'package:wan_android_flutter/common/common_utils.dart';
 import 'package:wan_android_flutter/common/route_config.dart';
 import 'package:wan_android_flutter/providers/user_provider.dart';
+
+final _tag = "MainDrawer";
 
 class MainDrawer extends StatefulWidget {
   @override
@@ -24,44 +28,53 @@ class _MainDrawerState extends State<MainDrawer> {
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.only(top: 38.0),
-              child: Consumer<UserProvider>(builder: (ctx, user, child) {
-                return InkWell(
-                  onTap: () {
-                    if(user.useName.isEmpty){
-                      Navigator.of(context).pushNamed(RouteName.login);
-                    }
-                  },
-                  child: Row(
-                    children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                        child: Image.asset(
-                          "assets/images/logo.png",
-                          width: 100,
-                        ),
+                padding: const EdgeInsets.only(top: 38.0),
+                child: Consumer<UserProvider>(
+                  builder: (context, user, child) {
+                    return InkWell(
+                      onTap: () {
+                        if (AppConfig.userName.isEmpty) {
+                          Navigator.of(context).pushNamed(RouteName.login);
+                        } else {}
+                      },
+                      child: Row(
+                        children: <Widget>[
+                          Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 16.0),
+                            child: Image.asset(
+                              "assets/images/logo.png",
+                              width: 100,
+                            ),
+                          ),
+                          Text(
+                            AppConfig.userName.isEmpty
+                                ? "未登录"
+                                : AppConfig.userName,
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          )
+                        ],
                       ),
-                      Text(
-                        user.useName.isEmpty ? "未登录" : user.useName,
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      )
-                    ],
-                  ),
-                );
-              }),
-            ),
+                    );
+                  },
+                )),
             Expanded(
               child: ListView(
                 children: <Widget>[
-                  ListTile(
-                    leading: const Icon(
-                      Icons.favorite,
+                  InkWell(
+                    onTap: () {
+                      Navigator.of(context).pushNamed(RouteName.collect);
+                    },
+                    child: const ListTile(
+                      leading: Icon(
+                        Icons.favorite,
+                      ),
+                      title: Text('我的收藏'),
                     ),
-                    title: const Text('我的收藏'),
                   ),
-                  ListTile(
-                    leading: const Icon(Icons.settings),
-                    title: const Text('设置'),
+                  const ListTile(
+                    leading: Icon(Icons.settings),
+                    title: Text('设置'),
                   ),
                 ],
               ),
@@ -70,5 +83,10 @@ class _MainDrawerState extends State<MainDrawer> {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 }

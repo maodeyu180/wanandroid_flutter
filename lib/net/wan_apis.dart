@@ -1,7 +1,10 @@
 
 
 
+import 'package:wan_android_flutter/AppConfig.dart';
+import 'package:wan_android_flutter/common/common_utils.dart';
 import 'package:wan_android_flutter/models/article_classify_entity.dart';
+import 'package:wan_android_flutter/models/collect_article_entity.dart';
 import 'package:wan_android_flutter/models/user_info_entity.dart';
 import 'package:wan_android_flutter/net/wan_dio_manager.dart';
 
@@ -23,12 +26,19 @@ class WanApis{
 
 
   static Future<UserInfoEntity> login(String username,String password) async{
-    return await DioManager.getIns().post('/user/login?username=$username&password=$password');
+    var result =  await DioManager.getIns().post<UserInfoEntity>('/user/login?username=$username&password=$password');
+    var cookies = await DioManager.getIns().loadCookie( "${AppConfig.baseUrl}/user/login?username=$username&password=$password");
+    tagPrint(DioManager.tag, "cookies = $cookies" );
+    return result;
   }
 
 
   static Future<List<ArticleClassifyEntity>> articleClassify() async{
     return await DioManager.getIns().get('/tree/json');
+  }
+
+  static Future<CollectArticleEntity> collectList(int pageIndex) async{
+    return await DioManager.getIns().get('/lg/collect/list/$pageIndex/json');
   }
 
 }

@@ -1,9 +1,11 @@
 import 'dart:math';
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:wan_android_flutter/common/common_utils.dart';
 import 'package:wan_android_flutter/common/route_config.dart';
 import 'package:wan_android_flutter/net/wan_apis.dart';
+import 'package:wan_android_flutter/providers/user_provider.dart';
 import '../models/banner_home_entity.dart';
 import '../models/home_article_list_entity.dart';
 
@@ -39,6 +41,9 @@ class _HomePageState extends State<HomePage> {
     _refresh();
 
     super.initState();
+    Provider.of<UserProvider>(context,listen: false).addListener(() {
+        _refresh();
+    });
   }
 
   Future<HomeArticleListEntity> _requestArticle() async {

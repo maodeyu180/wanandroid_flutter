@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:provider/provider.dart';
 import 'package:wan_android_flutter/AppConfig.dart';
+import 'package:wan_android_flutter/common/common_utils.dart';
 import 'package:wan_android_flutter/models/user_info_entity.dart';
 import 'package:wan_android_flutter/net/wan_apis.dart';
 import 'package:wan_android_flutter/net/wan_exception.dart';
@@ -10,7 +11,7 @@ import 'package:wan_android_flutter/providers/user_provider.dart';
 ///@author ： 于德海
 ///time ： 2024/2/22 17:08
 ///desc ：
-
+final _tag = "LoginPage";
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
@@ -103,10 +104,17 @@ class _LoginPageState extends State<LoginPage> {
         Provider.of<UserProvider>(context,listen: false).updateUserInfo(infoEntity.username!, infoEntity.password!);
       }
     }catch(e){
+      EasyLoading.dismiss();
+
       if(e is WanException){
-         EasyLoading.showToast(e.message!);
-         return false;
+        EasyLoading.showToast(e.message!);
+
+      }else{
+        EasyLoading.showToast(e.toString());
       }
+      tagPrint(_tag, e.toString());
+      return false;
+
     }
     EasyLoading.dismiss();
 

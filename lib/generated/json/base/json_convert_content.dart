@@ -7,6 +7,7 @@ import 'package:flutter/material.dart' show debugPrint;
 import 'package:wan_android_flutter/models/article_classify_entity.dart';
 import 'package:wan_android_flutter/models/banner_home_entity.dart';
 import 'package:wan_android_flutter/models/base_response_entity.dart';
+import 'package:wan_android_flutter/models/collect_article_entity.dart';
 import 'package:wan_android_flutter/models/home_article_list_entity.dart';
 import 'package:wan_android_flutter/models/user_info_entity.dart';
 
@@ -157,6 +158,14 @@ class JsonConvert {
       return data.map<BaseResponseEntity>((Map<String, dynamic> e) =>
           BaseResponseEntity.fromJson(e)).toList() as M;
     }
+    if (<CollectArticleEntity>[] is M) {
+      return data.map<CollectArticleEntity>((Map<String, dynamic> e) =>
+          CollectArticleEntity.fromJson(e)).toList() as M;
+    }
+    if (<CollectArticleDatas>[] is M) {
+      return data.map<CollectArticleDatas>((Map<String, dynamic> e) =>
+          CollectArticleDatas.fromJson(e)).toList() as M;
+    }
     if (<HomeArticleListEntity>[] is M) {
       return data.map<HomeArticleListEntity>((Map<String, dynamic> e) =>
           HomeArticleListEntity.fromJson(e)).toList() as M;
@@ -198,6 +207,8 @@ class JsonConvertClassCollection {
     (ArticleClassifyChildren).toString(): ArticleClassifyChildren.fromJson,
     (BannerHomeEntity).toString(): BannerHomeEntity.fromJson,
     (BaseResponseEntity).toString(): BaseResponseEntity.fromJson,
+    (CollectArticleEntity).toString(): CollectArticleEntity.fromJson,
+    (CollectArticleDatas).toString(): CollectArticleDatas.fromJson,
     (HomeArticleListEntity).toString(): HomeArticleListEntity.fromJson,
     (HomeArticleListDatas).toString(): HomeArticleListDatas.fromJson,
     (HomeArticleListDatasTags).toString(): HomeArticleListDatasTags.fromJson,
