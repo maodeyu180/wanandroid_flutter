@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wan_android_flutter/models/article_trans_entity.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 import '../models/home_article_list_entity.dart';
@@ -14,8 +15,8 @@ class ArticleDetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    HomeArticleListDatas detail =
-        ModalRoute.of(context)!.settings.arguments as HomeArticleListDatas;
+    ArticleTransEntity detail =
+        ModalRoute.of(context)!.settings.arguments as ArticleTransEntity;
     webViewController = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setBackgroundColor(const Color(0x00000000))
@@ -29,7 +30,7 @@ class ArticleDetailPage extends StatelessWidget {
           onWebResourceError: (WebResourceError error) {},
         ),
       )
-      ..loadRequest(Uri.parse(detail.link!));
+      ..loadRequest(Uri.parse(detail.url!));
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,

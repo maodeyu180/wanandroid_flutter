@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:wan_android_flutter/net/wan_apis.dart';
 
 import '../common/route_config.dart';
+import '../models/article_trans_entity.dart';
 import '../models/collect_article_entity.dart';
 
 ///@author ： 于德海
@@ -68,7 +70,7 @@ class _CollectPageItem extends StatelessWidget {
         child: InkWell(
           onTap: () {
             Navigator.of(context)
-                .pushNamed(RouteName.detail, arguments: itemData);
+                .pushNamed(RouteName.detail, arguments: ArticleTransEntity(itemData.id!,itemData.title!,itemData.link!));
           },
           child: Card(
               color: Theme
@@ -81,16 +83,79 @@ class _CollectPageItem extends StatelessWidget {
                 children: [
                   Positioned(
                     left: 10,
-                    top: 10,
+                    top: 15,
                     child: Text(
                       itemData.title ?? "",
                       style: TextStyle(fontSize: 15, color: Colors.black),
                     ),
                   ),
                   Positioned(
-                      left: 10, top: 60, child: Text("作者：${itemData.author}"))
+                      left: 10,
+                      top: 65,
+                      child: Text("作者：${itemData.author}"
+                         )),
+                  Positioned(
+                      left: 120,
+                      top: 65,
+                      child: Text( "发布时间：${itemData.niceDate}")),
+                  Positioned(
+                      right: 10,
+                      bottom: 10,
+                      child: _CollectWidget(
+                        itemData: itemData,
+                        unCollectFunc: (int id){
+
+                        },
+                      ))
                 ],
               )),
         ));
   }
+}
+
+
+
+class _CollectWidget extends StatefulWidget {
+  final CollectArticleDatas itemData;
+  final Function unCollectFunc;
+
+  const _CollectWidget({Key? key, required this.itemData,required this.unCollectFunc}) : super(key: key);
+
+  @override
+  State<StatefulWidget> createState() {
+    return _StateCollectWidget();
+  }
+}
+
+class _StateCollectWidget extends State<_CollectWidget> {
+
+  @override
+  void initState() {
+    super.initState();
+  }
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+        onPressed: () {
+          _unCollect();
+        },
+        icon: const Icon(
+          Icons.favorite,
+          color: Colors.red,
+        ));
+  }
+
+
+
+  void _unCollect(){
+    EasyLoading.show(status: "Waiting...");
+    WanApis.unCollect(widget.itemData.id!).then((value)  {
+      EasyLoading.dismiss();
+      widget.unCollectFunc(widget.itemData.id!);
+    }).catchError((error, stackTrace) {
+      EasyLoading.dismiss();
+      EasyLoading.showError("Error: ${error.toString()}");
+    });
+   }
+
 }

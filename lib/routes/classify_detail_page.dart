@@ -5,10 +5,11 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:provider/provider.dart';
 import 'package:wan_android_flutter/common/common_utils.dart';
 import 'package:wan_android_flutter/common/route_config.dart';
-import 'package:wan_android_flutter/models/article_trans_entity.dart';
+import 'package:wan_android_flutter/models/classify_detail_entity.dart';
 import 'package:wan_android_flutter/net/wan_apis.dart';
 import 'package:wan_android_flutter/providers/collect_action_provider.dart';
 import 'package:wan_android_flutter/providers/user_provider.dart';
+import '../models/article_trans_entity.dart';
 import '../models/banner_home_entity.dart';
 import '../models/home_article_list_entity.dart';
 
@@ -19,66 +20,55 @@ import '../models/home_article_list_entity.dart';
 ///
 ///
 
-const String _tag = "HomePage";
+const String _tag = "ClassifyDetail";
 
-class HomePage extends StatefulWidget {
-  HomePage({Key? key}) : super(key: key);
+class ClassifyDetailPage extends StatefulWidget {
+
+  Map<String,dynamic> paramMap;
+  ClassifyDetailPage( this.paramMap, {Key? key})
+      : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
-    return _HomePageState();
+    return _ClassifyDetailPageState();
   }
 }
 
-class _HomePageState extends State<HomePage> {
-  late List<BannerHomeEntity> _bannerList;
-  late int pageIndex;
+class _ClassifyDetailPageState extends State<ClassifyDetailPage> {
   late List<HomeArticleListDatas> _articleList;
+  late int cid;
+  late String title;
 
   @override
   void initState() {
-    _bannerList = [];
+
+    cid = widget.paramMap["cid"];
+    title = widget.paramMap['title'];
     _articleList = [];
     tagPrint(_tag, "initState");
-    pageIndex = 0;
-    _refresh();
-
+    _loadData();
     super.initState();
-    Provider.of<UserProvider>(context, listen: false).addListener(() {
-      _refresh();
-    });
-
     Provider.of<CollectActionProvider>(context, listen: false).addListener(() {
       var data = Provider.of<CollectActionProvider>(context, listen: false);
-      for(var i = 0; i < _articleList.length; i++){
-        if(_articleList[i].id == data.articleId){
-            _articleList[i].collect = data.action;
-
+      for (var i = 0; i < _articleList.length; i++) {
+        if (_articleList[i].id == data.articleId) {
+          _articleList[i].collect = data.action;
           break;
         }
         setState(() {
           _articleList;
         });
       }
-
     });
-
   }
 
-  Future<HomeArticleListEntity> _requestArticle() async {
-    return await WanApis.homeList(pageIndex);
-  }
 
-  Future<void> _refresh() async {
-    pageIndex = 0;
-    var bannerData = await WanApis.bannerHome().catchError((e) {
-      tagPrint(_tag, "banner error:$e");
-    });
-    _bannerList = bannerData;
-    HomeArticleListEntity articleListBean = await _requestArticle();
+
+  Future<void> _loadData() async {
+    HomeArticleListEntity result = await WanApis.classifyList(cid);
     setState(() {
       _articleList.clear();
-      _articleList.addAll(articleListBean.datas!);
+      _articleList.addAll(result.datas!);
     });
     return Future.value();
   }
@@ -86,37 +76,18 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     tagPrint(_tag, "build");
-    return RefreshIndicator(
-      onRefresh: _refresh,
-      child: Container(
-        width: double.infinity,
-        height: double.infinity,
-        child: ListView.builder(
-          itemCount: _articleList.isEmpty ? 0 : _articleList.length + 1,
-          shrinkWrap: true,
-          itemBuilder: (ctx, index) {
-            if (index == 0) {
-              return SizedBox(
-                  height: 200,
-                  width: double.infinity,
-                  child: Swiper(
-                    itemBuilder: (context, index) {
-                      return Image.network(_bannerList[index].imagePath ?? "",
-                          fit: BoxFit.fill);
-                    },
-                    itemCount: _bannerList.length,
-                    pagination: SwiperPagination(),
-                  ));
-            } else {
-              if (index == _articleList.length) {
-                _loadMore();
-              }
-              return _HomePageItem(
-                itemData: _articleList[index - 1],
-              );
-            }
-          },
-        ),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(title),
+      ),
+      body: ListView.builder(
+        itemCount: _articleList.length,
+        shrinkWrap: true,
+        itemBuilder: (ctx, index) {
+          return _ClassifyDetailItem(
+            itemData: _articleList[index],
+          );
+        },
       ),
     );
   }
@@ -127,27 +98,16 @@ class _HomePageState extends State<HomePage> {
     super.dispose();
   }
 
-  void _loadMore() async {
-    pageIndex++;
-    HomeArticleListEntity articleListBean = await _requestArticle();
-    setState(() {
-      _articleList.addAll(articleListBean.datas!);
-    });
-  }
+
 }
 //
 
-final _randomColors = [
-  Colors.deepPurple,
-  Colors.deepOrange,
-  Colors.indigoAccent,
-  Colors.pinkAccent
-];
 
-class _HomePageItem extends StatelessWidget {
+class _ClassifyDetailItem extends StatelessWidget {
   final HomeArticleListDatas itemData;
 
-  const _HomePageItem({Key? key, required this.itemData}) : super(key: key);
+  const _ClassifyDetailItem({Key? key, required this.itemData})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -156,7 +116,6 @@ class _HomePageItem extends StatelessWidget {
         height: 120,
         child: InkWell(
           onTap: () {
-
             Navigator.of(context)
                 .pushNamed(RouteName.detail, arguments: ArticleTransEntity(itemData.id!,itemData.title!,itemData.link!));
           },
@@ -183,7 +142,7 @@ class _HomePageItem extends StatelessWidget {
                   Positioned(
                       left: 120,
                       top: 65,
-                      child: Text( "发布时间：${itemData.niceShareDate}")),
+                      child: Text("发布时间：${itemData.niceShareDate}")),
                   Positioned(
                       right: 10,
                       bottom: 10,
@@ -208,31 +167,30 @@ class _CollectWidget extends StatefulWidget {
 }
 
 class _StateCollectWidget extends State<_CollectWidget> {
-
   @override
   void initState() {
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return IconButton(
         onPressed: () {
-          if (widget.itemData.collect) {
+          if (widget.itemData.collect!) {
             _unCollect();
           } else {
             _collect();
           }
         },
         icon: Icon(
-          widget.itemData.collect ? Icons.favorite : Icons.favorite_border,
+          widget.itemData.collect! ? Icons.favorite : Icons.favorite_border,
           color: Colors.red,
         ));
   }
 
-
-  void _collect(){
+  void _collect() {
     EasyLoading.show(status: "Waiting...");
-    WanApis.collect(widget.itemData.id!).then((value)  {
+    WanApis.collect(widget.itemData.id!).then((value) {
       EasyLoading.dismiss();
       setState(() {
         widget.itemData.collect = true;
@@ -243,9 +201,9 @@ class _StateCollectWidget extends State<_CollectWidget> {
     });
   }
 
-  void _unCollect(){
+  void _unCollect() {
     EasyLoading.show(status: "Waiting...");
-    WanApis.unCollect(widget.itemData.id!).then((value)  {
+    WanApis.unCollect(widget.itemData.id!).then((value) {
       EasyLoading.dismiss();
       setState(() {
         widget.itemData.collect = false;
@@ -254,6 +212,5 @@ class _StateCollectWidget extends State<_CollectWidget> {
       EasyLoading.dismiss();
       EasyLoading.showError("Error: ${error.toString()}");
     });
-   }
-
+  }
 }

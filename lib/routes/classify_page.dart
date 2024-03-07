@@ -2,6 +2,7 @@ import 'package:expansion_tile_group/expansion_tile_group.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:wan_android_flutter/common/common_utils.dart';
+import 'package:wan_android_flutter/common/route_config.dart';
 import 'package:wan_android_flutter/net/wan_apis.dart';
 
 import '../models/article_classify_entity.dart';
@@ -70,6 +71,10 @@ class _ClassifyItem extends StatelessWidget {
     return InkWell(
       onTap: () {
         EasyLoading.showToast("点击${childData.name!}");
+        Map<String,dynamic> map ={};
+        map['cid'] = childData.id;
+        map['title'] = childData.name!;
+        Navigator.of(context).pushNamed(RouteName.classifyDetail,arguments: map);
       },
       child: Container(
         width: double.infinity,

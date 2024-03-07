@@ -35,7 +35,29 @@ class _MainDrawerState extends State<MainDrawer> {
                       onTap: () {
                         if (AppConfig.userName.isEmpty) {
                           Navigator.of(context).pushNamed(RouteName.login);
-                        } else {}
+                        } else {
+                          showDialog(
+                              context: context,
+                              builder: (ctx) => AlertDialog(
+                                    title: Text("退出登录"),
+                                    content: Text("是否退出当前账号？"),
+                                    actions: [
+                                      TextButton(
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: Text("取消")),
+                                      TextButton(
+                                          onPressed: () {
+                                            Provider.of<UserProvider>(context,
+                                                    listen: false)
+                                                .updateUserInfo("", "");
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: Text("确认"))
+                                    ],
+                                  ));
+                        }
                       },
                       child: Row(
                         children: <Widget>[
@@ -63,7 +85,11 @@ class _MainDrawerState extends State<MainDrawer> {
                 children: <Widget>[
                   InkWell(
                     onTap: () {
-                      Navigator.of(context).pushNamed(RouteName.collect);
+                      if (AppConfig.userName.isEmpty) {
+                        Navigator.of(context).pushNamed(RouteName.login);
+                      } else {
+                        Navigator.of(context).pushNamed(RouteName.collect);
+                      }
                     },
                     child: const ListTile(
                       leading: Icon(

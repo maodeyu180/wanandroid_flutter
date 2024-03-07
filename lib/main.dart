@@ -6,6 +6,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:provider/provider.dart';
 import 'package:wan_android_flutter/common/route_config.dart';
 import 'package:wan_android_flutter/common/wan_global.dart';
+import 'package:wan_android_flutter/providers/collect_action_provider.dart';
 import 'package:wan_android_flutter/providers/user_provider.dart';
 import 'package:wan_android_flutter/routes/classify_page.dart';
 import 'package:wan_android_flutter/routes/home_page.dart';
@@ -28,6 +29,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => UserProvider()),
+        ChangeNotifierProvider(create: (_) => CollectActionProvider()),
       ],
       child: MaterialApp(
         routes: globalRoutes,
@@ -81,6 +83,7 @@ class _MyHomePageState extends State<MyHomePage> {
         actions: [
           IconButton(
               onPressed: () {
+                // Navigator.of(context).push(MaterialPageRoute(builder: (context)=>TestWidgetPage()));
                 CommonUtils.showNoticeDialog(context, "搜索暂未开放",
                     title: "Search");
               },
@@ -109,7 +112,7 @@ class _MyHomePageState extends State<MyHomePage> {
         children: [
           Visibility(
               visible: _pageIndex == 0, maintainState: true, child: HomePage()),
-          Visibility(visible: _pageIndex == 1, child: ClassifyPage()),
+          Visibility(visible: _pageIndex == 1, maintainState: true, child: ClassifyPage()),
           Visibility(visible: _pageIndex == 2, child: NavigatorPage()),
           Visibility(visible: _pageIndex == 3, child: ProjectPage()),
         ],

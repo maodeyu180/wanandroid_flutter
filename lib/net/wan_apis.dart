@@ -4,6 +4,7 @@
 import 'package:wan_android_flutter/AppConfig.dart';
 import 'package:wan_android_flutter/common/common_utils.dart';
 import 'package:wan_android_flutter/models/article_classify_entity.dart';
+import 'package:wan_android_flutter/models/classify_detail_entity.dart';
 import 'package:wan_android_flutter/models/collect_article_entity.dart';
 import 'package:wan_android_flutter/models/user_info_entity.dart';
 import 'package:wan_android_flutter/net/wan_dio_manager.dart';
@@ -49,5 +50,12 @@ class WanApis{
   static Future<dynamic> unCollect(int id) async{
     return await DioManager.getIns().post('/lg/uncollect/$id/json');
   }
+
+
+  static Future<HomeArticleListEntity> classifyList(int cid) async{
+
+    return await DioManager.getIns().get('/article/list/0/json?cid=$cid');
+  }
+
 
 }
