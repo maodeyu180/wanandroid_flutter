@@ -16,4 +16,5 @@ class ArticleTransEntity{
   int id ;
 
   ArticleTransEntity(this.id, this.title, this.url);
+
 }
