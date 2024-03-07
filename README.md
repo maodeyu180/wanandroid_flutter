@@ -10,10 +10,10 @@ API from: https://www.wanandroid.com/
 - json_annotation
 
 ## 截图
-<figure>
+<div style="display:inline-block">
 <img src="appImgs/screenShot1.png" width="240"/>
 <img src="appImgs/screenShot2.png" width="240"/>
-</figure>
+</div>
 <figure>
 <img src="appImgs/screenShot3.png" width="240"/>
 <img src="appImgs/screenShot4.png" width="240"/>
