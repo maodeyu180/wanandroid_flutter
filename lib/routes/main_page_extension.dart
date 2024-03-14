@@ -98,10 +98,14 @@ class _MainDrawerState extends State<MainDrawer> {
                       title: Text('我的收藏'),
                     ),
                   ),
-                  const ListTile(
-                    leading: Icon(Icons.settings),
-                    title: Text('设置'),
-                  ),
+                  InkWell(
+                      onTap: () {
+                          Navigator.of(context).pushNamed(RouteName.setting);
+                      },
+                      child: const ListTile(
+                        leading: Icon(Icons.settings),
+                        title: Text('设置'),
+                      )),
                 ],
               ),
             ),

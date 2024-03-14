@@ -11,6 +11,7 @@ import 'package:wan_android_flutter/models/base_response_entity.dart';
 import 'package:wan_android_flutter/models/classify_detail_entity.dart';
 import 'package:wan_android_flutter/models/collect_article_entity.dart';
 import 'package:wan_android_flutter/models/home_article_list_entity.dart';
+import 'package:wan_android_flutter/models/navigation_url_entity.dart';
 import 'package:wan_android_flutter/models/user_info_entity.dart';
 import 'package:wan_android_flutter/models/wan_navigator_entity.dart';
 
@@ -186,6 +187,14 @@ class JsonConvert {
       return data.map<HomeArticleListDatasTags>((Map<String, dynamic> e) =>
           HomeArticleListDatasTags.fromJson(e)).toList() as M;
     }
+    if (<NavigationUrlEntity>[] is M) {
+      return data.map<NavigationUrlEntity>((Map<String, dynamic> e) =>
+          NavigationUrlEntity.fromJson(e)).toList() as M;
+    }
+    if (<NavigationUrlArticles>[] is M) {
+      return data.map<NavigationUrlArticles>((Map<String, dynamic> e) =>
+          NavigationUrlArticles.fromJson(e)).toList() as M;
+    }
     if (<UserInfoEntity>[] is M) {
       return data.map<UserInfoEntity>((Map<String, dynamic> e) =>
           UserInfoEntity.fromJson(e)).toList() as M;
@@ -225,6 +234,8 @@ class JsonConvertClassCollection {
     (HomeArticleListEntity).toString(): HomeArticleListEntity.fromJson,
     (HomeArticleListDatas).toString(): HomeArticleListDatas.fromJson,
     (HomeArticleListDatasTags).toString(): HomeArticleListDatasTags.fromJson,
+    (NavigationUrlEntity).toString(): NavigationUrlEntity.fromJson,
+    (NavigationUrlArticles).toString(): NavigationUrlArticles.fromJson,
     (UserInfoEntity).toString(): UserInfoEntity.fromJson,
     (WanNavigatorEntity).toString(): WanNavigatorEntity.fromJson,
   };

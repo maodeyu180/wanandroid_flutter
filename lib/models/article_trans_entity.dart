@@ -11,10 +11,9 @@ import '../generated/json/base/json_field.dart';
 @JsonSerializable()
 class ArticleTransEntity{
 
-  String title;
-  String url;
-  int id ;
+  String title = "";
+  String url = "";
+  int id  = 0;
 
   ArticleTransEntity(this.id, this.title, this.url);
-
 }

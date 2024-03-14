@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:wan_android_flutter/common/route_config.dart';
 import 'package:wan_android_flutter/common/wan_global.dart';
 import 'package:wan_android_flutter/providers/collect_action_provider.dart';
+import 'package:wan_android_flutter/providers/theme_provider.dart';
 import 'package:wan_android_flutter/providers/user_provider.dart';
 import 'package:wan_android_flutter/routes/classify_page.dart';
 import 'package:wan_android_flutter/routes/home_page.dart';
@@ -30,17 +31,20 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) => UserProvider()),
         ChangeNotifierProvider(create: (_) => CollectActionProvider()),
+        ChangeNotifierProvider(create: (_) => ThemeProvider()),
       ],
-      child: MaterialApp(
-        routes: globalRoutes,
-        title: 'WanAndroidFlutter',
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-          useMaterial3: true,
-        ),
-        builder: EasyLoading.init(),
-        initialRoute: RouteName.home,
-      ),
+      child: Consumer<ThemeProvider>(builder:(ctx,theme,_child){
+        return MaterialApp(
+                      routes: globalRoutes,
+                      title: 'WanAndroidFlutter',
+                      theme: ThemeData(
+                        colorScheme: ColorScheme.fromSeed(seedColor: theme.themeColor),
+                        useMaterial3: true,
+                      ),
+                      builder: EasyLoading.init(),
+                      initialRoute: RouteName.home,
+                    );
+      } ,),
     );
   }
 }

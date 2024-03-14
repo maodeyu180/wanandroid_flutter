@@ -11,6 +11,7 @@ import 'package:wan_android_flutter/net/wan_dio_manager.dart';
 
 import '../models/banner_home_entity.dart';
 import '../models/home_article_list_entity.dart';
+import '../models/navigation_url_entity.dart';
 
 class WanApis{
 
@@ -55,6 +56,10 @@ class WanApis{
   static Future<HomeArticleListEntity> classifyList(int cid) async{
 
     return await DioManager.getIns().get('/article/list/0/json?cid=$cid');
+  }
+
+  static Future<List<NavigationUrlEntity>> getNavigation() async{
+    return  await DioManager.getIns().get('/navi/json');
   }
 
 
