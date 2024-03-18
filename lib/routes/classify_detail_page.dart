@@ -79,6 +79,7 @@ class _ClassifyDetailPageState extends State<ClassifyDetailPage> {
     tagPrint(_tag, "build");
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(title),
       ),
       body: ListView.builder(

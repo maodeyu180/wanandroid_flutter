@@ -34,7 +34,8 @@ class _CollectPageState extends State<CollectPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(appBar: AppBar(title: Text("我的收藏"),),
+    return Scaffold(appBar: AppBar(title: Text("我的收藏"),
+      backgroundColor: Theme.of(context).colorScheme.inversePrimary,),
         body: ListView.builder(
             itemCount: _collectList.length, itemBuilder: (context, index) {
             return _CollectPageItem(itemData: _collectList[index]);
