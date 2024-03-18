@@ -1,4 +1,8 @@
 
+
+import 'dart:ffi';
+
+import 'package:flutter/material.dart';
 import 'package:wan_android_flutter/models/user_info_entity.dart';
 
 class AppConfig{
@@ -6,7 +10,8 @@ class AppConfig{
 
   static UserInfoEntity userInfo = UserInfoEntity();
 
-
+  static Color themeColor = Colors.deepPurple;
+  static List<int> collectArticleIdList = [];
   static String userName = "";
   static String password = "";
 }

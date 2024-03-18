@@ -8,10 +8,13 @@ import 'package:wan_android_flutter/net/wan_apis.dart';
 import 'package:wan_android_flutter/net/wan_exception.dart';
 import 'package:wan_android_flutter/providers/user_provider.dart';
 
+import '../models/collect_article_entity.dart';
+
 ///@author ： 于德海
 ///time ： 2024/2/22 17:08
 ///desc ：
 final _tag = "LoginPage";
+
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
@@ -74,7 +77,7 @@ class _LoginPageState extends State<LoginPage> {
             child: ElevatedButton(
                 onPressed: () {
                   _login().then((value) {
-                    if(value){
+                    if (value) {
                       Navigator.of(context).pop();
                     }
                   });
@@ -96,29 +99,33 @@ class _LoginPageState extends State<LoginPage> {
       return false;
     }
     EasyLoading.show(status: "登录中...");
-    try{
+    try {
       UserInfoEntity infoEntity = await WanApis.login(
-              _usernameController.value.text, _passwordController.value.text);
+          _usernameController.value.text, _passwordController.value.text);
       AppConfig.userInfo = infoEntity;
-      if(context.mounted){
-        Provider.of<UserProvider>(context,listen: false).updateUserInfo(infoEntity.username!, infoEntity.password!);
+      if (context.mounted) {
+        Provider.of<UserProvider>(context, listen: false)
+            .updateUserInfo(infoEntity.username!, infoEntity.password!);
       }
-    }catch(e){
+    } catch (e) {
       EasyLoading.dismiss();
 
-      if(e is WanException){
+      if (e is WanException) {
         EasyLoading.showToast(e.message!);
-
-      }else{
+      } else {
         EasyLoading.showToast(e.toString());
       }
       tagPrint(_tag, e.toString());
       return false;
-
+    }
+    CollectArticleEntity entity = await WanApis.collectList(0);
+    for (CollectArticleDatas data in entity.datas!) {
+      AppConfig.collectArticleIdList.add(data.id!);
     }
     EasyLoading.dismiss();
 
     EasyLoading.showToast("登录成功");
+
     return true;
   }
 }

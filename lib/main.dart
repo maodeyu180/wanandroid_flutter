@@ -117,8 +117,8 @@ class _MyHomePageState extends State<MyHomePage> {
           Visibility(
               visible: _pageIndex == 0, maintainState: true, child: HomePage()),
           Visibility(visible: _pageIndex == 1, maintainState: true, child: ClassifyPage()),
-          Visibility(visible: _pageIndex == 2, child: NavigatorPage()),
-          Visibility(visible: _pageIndex == 3, child: ProjectPage()),
+          Visibility(visible: _pageIndex == 2, maintainState: true, child: NavigatorPage()),
+          Visibility(visible: _pageIndex == 3, maintainState: true, child: ProjectPage()),
         ],
       )),
       floatingActionButton: FloatingActionButton(

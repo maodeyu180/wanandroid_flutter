@@ -4,14 +4,15 @@
 import 'package:wan_android_flutter/AppConfig.dart';
 import 'package:wan_android_flutter/common/common_utils.dart';
 import 'package:wan_android_flutter/models/article_classify_entity.dart';
-import 'package:wan_android_flutter/models/classify_detail_entity.dart';
 import 'package:wan_android_flutter/models/collect_article_entity.dart';
+import 'package:wan_android_flutter/models/project_list_entity.dart';
 import 'package:wan_android_flutter/models/user_info_entity.dart';
 import 'package:wan_android_flutter/net/wan_dio_manager.dart';
 
 import '../models/banner_home_entity.dart';
 import '../models/home_article_list_entity.dart';
 import '../models/navigation_url_entity.dart';
+import '../models/project_classify_entity.dart';
 
 class WanApis{
 
@@ -60,6 +61,15 @@ class WanApis{
 
   static Future<List<NavigationUrlEntity>> getNavigation() async{
     return  await DioManager.getIns().get('/navi/json');
+  }
+
+  static Future<List<ProjectClassifyEntity>> getProjectClassify() async{
+
+    return  await DioManager.getIns().get('/project/tree/json');
+  }
+
+  static Future<ProjectListEntity> getProjectList(String cid) async{
+    return  await DioManager.getIns().get('/project/list/1/json?cid=$cid');
   }
 
 

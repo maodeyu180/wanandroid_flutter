@@ -12,6 +12,8 @@ import 'package:wan_android_flutter/models/classify_detail_entity.dart';
 import 'package:wan_android_flutter/models/collect_article_entity.dart';
 import 'package:wan_android_flutter/models/home_article_list_entity.dart';
 import 'package:wan_android_flutter/models/navigation_url_entity.dart';
+import 'package:wan_android_flutter/models/project_classify_entity.dart';
+import 'package:wan_android_flutter/models/project_list_entity.dart';
 import 'package:wan_android_flutter/models/user_info_entity.dart';
 import 'package:wan_android_flutter/models/wan_navigator_entity.dart';
 
@@ -154,7 +156,6 @@ class JsonConvert {
       return data.map<ArticleClassifyChildren>((Map<String, dynamic> e) =>
           ArticleClassifyChildren.fromJson(e)).toList() as M;
     }
-
     if (<BannerHomeEntity>[] is M) {
       return data.map<BannerHomeEntity>((Map<String, dynamic> e) =>
           BannerHomeEntity.fromJson(e)).toList() as M;
@@ -194,6 +195,22 @@ class JsonConvert {
     if (<NavigationUrlArticles>[] is M) {
       return data.map<NavigationUrlArticles>((Map<String, dynamic> e) =>
           NavigationUrlArticles.fromJson(e)).toList() as M;
+    }
+    if (<ProjectClassifyEntity>[] is M) {
+      return data.map<ProjectClassifyEntity>((Map<String, dynamic> e) =>
+          ProjectClassifyEntity.fromJson(e)).toList() as M;
+    }
+    if (<ProjectListEntity>[] is M) {
+      return data.map<ProjectListEntity>((Map<String, dynamic> e) =>
+          ProjectListEntity.fromJson(e)).toList() as M;
+    }
+    if (<ProjectListDatas>[] is M) {
+      return data.map<ProjectListDatas>((Map<String, dynamic> e) =>
+          ProjectListDatas.fromJson(e)).toList() as M;
+    }
+    if (<ProjectListDatasTags>[] is M) {
+      return data.map<ProjectListDatasTags>((Map<String, dynamic> e) =>
+          ProjectListDatasTags.fromJson(e)).toList() as M;
     }
     if (<UserInfoEntity>[] is M) {
       return data.map<UserInfoEntity>((Map<String, dynamic> e) =>
@@ -236,6 +253,10 @@ class JsonConvertClassCollection {
     (HomeArticleListDatasTags).toString(): HomeArticleListDatasTags.fromJson,
     (NavigationUrlEntity).toString(): NavigationUrlEntity.fromJson,
     (NavigationUrlArticles).toString(): NavigationUrlArticles.fromJson,
+    (ProjectClassifyEntity).toString(): ProjectClassifyEntity.fromJson,
+    (ProjectListEntity).toString(): ProjectListEntity.fromJson,
+    (ProjectListDatas).toString(): ProjectListDatas.fromJson,
+    (ProjectListDatasTags).toString(): ProjectListDatasTags.fromJson,
     (UserInfoEntity).toString(): UserInfoEntity.fromJson,
     (WanNavigatorEntity).toString(): WanNavigatorEntity.fromJson,
   };

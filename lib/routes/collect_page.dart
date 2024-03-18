@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:wan_android_flutter/net/wan_apis.dart';
 
+import '../AppConfig.dart';
 import '../common/route_config.dart';
 import '../models/article_trans_entity.dart';
 import '../models/collect_article_entity.dart';
@@ -52,6 +53,9 @@ class _CollectPageState extends State<CollectPage> {
     }
     setState(() {
       _collectList.addAll(entity.datas!);
+      for(CollectArticleDatas data in entity.datas!){
+        AppConfig.collectArticleIdList.add(data.id!);
+      }
     });
   }
 }

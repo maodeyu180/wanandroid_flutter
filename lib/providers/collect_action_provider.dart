@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wan_android_flutter/AppConfig.dart';
 
 ///@author ： 于德海
 ///time ： 2024/3/1 17:48
@@ -13,6 +14,11 @@ class CollectActionProvider extends ChangeNotifier{
   void updateAction(int articleId, bool action){
     this.articleId = articleId;
     this.action = action;
+    if(action){
+      AppConfig.collectArticleIdList.add(articleId);
+    }else{
+      AppConfig.collectArticleIdList.remove(articleId);
+    }
     notifyListeners();
   }
 

@@ -30,7 +30,7 @@ Map<String, dynamic> $BaseResponseEntityToJson(BaseResponseEntity entity) {
 
 extension BaseResponseEntityExtension on BaseResponseEntity {
   BaseResponseEntity copyWith({
-    dynamic data,
+    dynamic? data,
     int? errorCode,
     String? errorMsg,
   }) {

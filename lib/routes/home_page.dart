@@ -9,6 +9,7 @@ import 'package:wan_android_flutter/models/article_trans_entity.dart';
 import 'package:wan_android_flutter/net/wan_apis.dart';
 import 'package:wan_android_flutter/providers/collect_action_provider.dart';
 import 'package:wan_android_flutter/providers/user_provider.dart';
+import '../AppConfig.dart';
 import '../models/banner_home_entity.dart';
 import '../models/home_article_list_entity.dart';
 
@@ -217,6 +218,11 @@ class _StateCollectWidget extends State<_CollectWidget> {
   Widget build(BuildContext context) {
     return IconButton(
         onPressed: () {
+
+          if (AppConfig.userName.isEmpty) {
+            Navigator.of(context).pushNamed(RouteName.login);
+            return;
+          }
           if (widget.itemData.collect) {
             _unCollect();
           } else {
