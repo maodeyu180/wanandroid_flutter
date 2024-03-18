@@ -3,7 +3,12 @@
 API from: https://www.wanandroid.com/
 
 - 支持更换主题色。
-- 支持登录，收藏
+- 支持登录，收藏。
+- 首页刷新，加载。
+- 二级分类列表。
+- 弹窗应用。
+- 全局广播应用。
+- DioManager封装。
 ## flutter library
 - dio
 - shared_preferences

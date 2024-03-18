@@ -4,6 +4,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:wan_android_flutter/common/route_config.dart';
 import 'package:wan_android_flutter/common/wan_global.dart';
 import 'package:wan_android_flutter/providers/collect_action_provider.dart';
@@ -33,18 +34,20 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => CollectActionProvider()),
         ChangeNotifierProvider(create: (_) => ThemeProvider()),
       ],
-      child: Consumer<ThemeProvider>(builder:(ctx,theme,_child){
-        return MaterialApp(
-                      routes: globalRoutes,
-                      title: 'WanAndroidFlutter',
-                      theme: ThemeData(
-                        colorScheme: ColorScheme.fromSeed(seedColor: theme.themeColor),
-                        useMaterial3: true,
-                      ),
-                      builder: EasyLoading.init(),
-                      initialRoute: RouteName.home,
-                    );
-      } ,),
+      child: Consumer<ThemeProvider>(
+        builder: (ctx, theme, _child) {
+          return MaterialApp(
+            routes: globalRoutes,
+            title: 'WanAndroidFlutter',
+            theme: ThemeData(
+              colorScheme: ColorScheme.fromSeed(seedColor: theme.themeColor),
+              useMaterial3: true,
+            ),
+            builder: EasyLoading.init(),
+            initialRoute: RouteName.home,
+          );
+        },
+      ),
     );
   }
 }
@@ -80,7 +83,10 @@ class _MyHomePageState extends State<MyHomePage> {
         // TRY THIS: Try changing the color here to a specific color (to
         // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
         // change color while the other colors stay the same.
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        backgroundColor: Theme
+            .of(context)
+            .colorScheme
+            .inversePrimary,
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
         title: const Text("Wan Android"),
@@ -113,21 +119,59 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: Center(
           child: Stack(
-        children: [
-          Visibility(
-              visible: _pageIndex == 0, maintainState: true, child: HomePage()),
-          Visibility(visible: _pageIndex == 1, maintainState: true, child: ClassifyPage()),
-          Visibility(visible: _pageIndex == 2, maintainState: true, child: NavigatorPage()),
-          Visibility(visible: _pageIndex == 3, maintainState: true, child: ProjectPage()),
-        ],
-      )),
+            children: [
+              Visibility(
+                  visible: _pageIndex == 0,
+                  maintainState: true,
+                  child: HomePage()),
+              Visibility(
+                  visible: _pageIndex == 1,
+                  maintainState: true,
+                  child: ClassifyPage()),
+              Visibility(
+                  visible: _pageIndex == 2,
+                  maintainState: true,
+                  child: NavigatorPage()),
+              Visibility(
+                  visible: _pageIndex == 3,
+                  maintainState: true,
+                  child: ProjectPage()),
+            ],
+          )),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          CommonUtils.showNoticeDialog(context, "暂未开放");
+          _showFeedback();
         },
         tooltip: 'FeedBack',
         child: const Icon(Icons.feedback),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
+  }
+
+  void _showFeedback() {
+    //https://github.com/yudehai0204/wanandroid_flutter/issues
+    showDialog(
+        context: context,
+        builder: (ctx) {
+          return AlertDialog(
+            title: Text("问题反馈"),
+            content: Text("是否前往github界面提交issue"),
+            actions: [
+              TextButton(
+                child: Text("是的"),
+                onPressed: () {
+                  launchUrl(Uri.parse("https://github.com/yudehai0204/wanandroid_flutter/issues"));
+                  Navigator.of(context).pop();
+                }, //关闭对话框
+              ),
+              TextButton(
+                  child: Text("一会儿"),
+                  onPressed: () {
+                    // ... 执行删除操作
+                    Navigator.of(context).pop(); //关闭对话框
+                  })
+            ],
+          );
+        });
   }
 }
