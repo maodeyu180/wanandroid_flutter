@@ -17,7 +17,6 @@
       </intent>
     </queries>
     <application
-        android:label="wan_android_flutter"
         android:name="${applicationName}"
         android:label="WanAndroidFlutter"
         android:icon="@mipmap/ic_launcher">
