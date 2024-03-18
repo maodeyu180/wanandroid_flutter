@@ -70,7 +70,6 @@ class _ClassifyItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        EasyLoading.showToast("点击${childData.name!}");
         Map<String,dynamic> map ={};
         map['cid'] = childData.id;
         map['title'] = childData.name!;
