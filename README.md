@@ -29,3 +29,7 @@ API from: https://www.wanandroid.com/
 
 
 <img src="appImgs/screenShot5.png" width="300"/>
+
+
+## APK体验地址
+**https://github.com/yudehai0204/wanandroid_flutter/tree/main/android/app/release**
